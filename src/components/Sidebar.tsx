@@ -57,7 +57,7 @@ import { WorkingDots } from "./WorkingIndicator";
 import { nextRename } from "@/lib/rename";
 import { useDesktopCapabilities } from "./DesktopCapabilities";
 import { MIN_QUERY, SearchResults } from "./SearchResults";
-import { TeamLibraryPanel } from "./TeamLibraryPanel";
+import { TeamLibraryPanel } from "./lazy-screens";
 import { SidebarNewChatPanel } from "./SidebarNewChatPanel";
 import { openCommandPalette } from "./CommandPalette";
 import { ShareTeamDialog } from "./ShareTeamDialog";

@@ -9,11 +9,11 @@ import {
   orgCardNotes,
   orgContentsLine,
   orgModeBadge,
-  orgPackagePreview,
   orgPublisherLine,
   packageProvenance,
   type OrgLibraryPackage,
 } from "./org-library";
+import { orgPackagePreview } from "./team-import";
 import { OrgLibraryTab } from "@/components/TeamLibraryPanelOrg";
 import { TeamImportDetails } from "@/components/TeamLibraryPanel";
 import { parsePackageDocument } from "../../shared/package-format";
