@@ -1,8 +1,12 @@
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, beforeAll, describe, expect, it } from "vitest";
 
-import { setLocale } from "./i18n";
+import { loadLocale, setLocale } from "./i18n";
 import { goalCoordinatorForComposer, groupComposerHint, openTaskWorking, roomRespondersForComposer } from "./group-routing";
 import type { Group, GroupDefaultResponder } from "@/state/store";
+
+beforeAll(async () => {
+  await Promise.all(["pt-br", "ja"].map(loadLocale));
+});
 
 describe("openTaskWorking", () => {
   const tasks = [

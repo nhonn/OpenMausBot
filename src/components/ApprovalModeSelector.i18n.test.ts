@@ -1,8 +1,10 @@
 import { describe, expect, it, afterEach } from "vitest";
 
 import { setLocale, t } from "@/lib/i18n";
-import { locales } from "@/locales";
+import { loadAllLocalePacks, locales } from "@/locales";
 import { approvalModeOptions } from "./ApprovalModeSelector";
+
+await loadAllLocalePacks();
 
 const PACKS = Object.keys(locales).filter((code) => code !== "pt");
 

@@ -1,7 +1,11 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 
 import { documentLanguage, resolveLocale, setLocale, t, tFromServer } from "./i18n";
-import { en, localeChoices, locales } from "@/locales";
+import { en, loadAllLocalePacks, localeChoices, locales } from "@/locales";
+
+beforeAll(async () => {
+  await loadAllLocalePacks();
+});
 
 afterEach(() => {
   setLocale("en");
@@ -191,12 +195,15 @@ describe("page language", () => {
     expect(root.lang).toBe("en");
   });
 
-  it("tags the page from the system language the moment the module loads", async () => {
+  it("tags the page from the system language once its pack has loaded", async () => {
     const root = { lang: "en", dir: "" };
     vi.stubGlobal("document", { documentElement: root });
     vi.stubGlobal("navigator", { language: "ja-JP" });
     vi.resetModules();
-    await import("./i18n");
+    const fresh = await import("./i18n");
+    expect(root.lang).toBe("en");
+    await fresh.loadLocale("ja-JP");
+    fresh.setLocale("ja-JP");
     expect(root).toEqual({ lang: "ja", dir: "ltr" });
   });
 

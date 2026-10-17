@@ -1,7 +1,7 @@
 import { createElement, type ComponentProps, type MemoExoticComponent, type ReactNode } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { setLocale } from "@/lib/i18n";
+import { loadLocale, setLocale } from "@/lib/i18n";
 import { formatUpdatedAt, nextSnoozeExpiry, orderedSidebarThreads, orderedThreadList, partitionHelperThreads, SidebarThreadRow, stampClock, threadByline, threadOpenerLabel, threadUpdatedLabel, visibleSidebarThreads } from "./SidebarThreadRow";
 
 type ThreadRowProps = ComponentProps<typeof SidebarThreadRow>;
@@ -36,6 +36,8 @@ vi.mock("react", async (importOriginal) => {
     useLayoutEffect: (() => undefined) as unknown as typeof actual.useLayoutEffect,
   };
 });
+
+await loadLocale("pt-br");
 
 beforeEach(() => rowHooks.begin(true));
 afterEach(() => setLocale("en"));

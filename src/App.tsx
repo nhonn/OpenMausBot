@@ -41,7 +41,7 @@ import { WelcomeKeeper } from "@/components/cloud-welcome/WelcomeKeeper";
 import { cloudFirstRun, cloudWelcomeVisible, useCloudWelcome } from "@/lib/cloud-welcome";
 import { engineReady } from "@/components/EngineLibrary";
 import { CommandPalette } from "@/components/CommandPalette";
-import { setLocale } from "@/lib/i18n";
+import { loadLocale, setLocale } from "@/lib/i18n";
 import { shouldOpenKeyboardShortcuts } from "@/lib/keyboard-shortcuts";
 import { effectiveLanguage, useLanguageChoice } from "@/lib/language-preference";
 import { botShowsUnread } from "@/lib/bot-unread";
@@ -101,8 +101,16 @@ function Shell({ viewer }: { viewer: WelcomeViewer | null }) {
   const language = effectiveLanguage(useLanguageChoice(), state.config?.language);
   const [, setLocaleEpoch] = useState(0);
   useEffect(() => {
-    setLocale(language || globalThis.navigator?.language);
+    const tag = language || globalThis.navigator?.language;
+    let stale = false;
+    void loadLocale(tag).then(() => {
+      if (stale) return;
+      setLocale(tag);
     setLocaleEpoch((epoch) => epoch + 1);
+    });
+    return () => {
+      stale = true;
+    };
   }, [language]);
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [localVmWorkspaceBotId, setLocalVmWorkspaceBotId] = useState<string | null>(null);

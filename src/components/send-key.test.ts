@@ -5,6 +5,7 @@ import { createRoot, type Root } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { Bot, Group, InstanceInfo } from "@/state/store";
 import { SEND_KEYS, type SendKey } from "@/lib/send-key";
+import { loadLocale } from "@/lib/i18n";
 import type { ApprovalModeSelector } from "./ApprovalModeSelector";
 import type { ModelPicker } from "./ModelPicker";
 
@@ -97,6 +98,8 @@ function expectSendKey(mode: SendKey, input: () => HTMLTextAreaElement, sent: ()
   expect(press(input(), send).defaultPrevented).toBe(true);
   expect(sent()).toBe(1);
 }
+
+await loadLocale("ja");
 
 beforeEach(() => {
   fixture.dispatch.mockClear();

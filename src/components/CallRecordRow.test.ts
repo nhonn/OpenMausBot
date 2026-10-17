@@ -2,7 +2,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, describe, expect, it } from "vitest";
 
-import { setLocale } from "@/lib/i18n";
+import { loadLocale, setLocale } from "@/lib/i18n";
 import type { Message } from "@/state/store";
 import { CallRecordRow } from "./CallRecordRow";
 
@@ -30,6 +30,8 @@ const transcript: Message[] = [
 const draw = (message: Message, messages: Message[] = transcript, { busy = false, hasMore = false } = {}) =>
   renderToStaticMarkup(createElement(CallRecordRow, { message, transcript: [...messages, message], botName: "Pepper", busy, hasMore }));
 const lineTexts = (markup: string) => [...markup.matchAll(/<li\b[^>]*>(.*?)<\/li>/g)].map(([, inner]) => inner!.replace(/<[^>]+>/g, ""));
+
+await loadLocale("zh");
 
 afterEach(() => {
   setLocale("en");

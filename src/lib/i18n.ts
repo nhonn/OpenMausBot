@@ -1,4 +1,4 @@
-import { en, localeChoices, locales, type LocaleKey, type LocalePack } from "@/locales";
+import { en, loadLocalePack, localeChoices, localeLoaders, locales, type LocaleKey, type LocalePack } from "@/locales";
 
 export function resolveLocale(tag: string | undefined, available: ReadonlySet<string>): string {
   if (!tag) return "en";
@@ -27,9 +27,15 @@ export function setLocale(tag: string | undefined): string {
   return resolved;
 }
 
+/** Makes the pack for `tag` available to setLocale; a pack that fails to load leaves setLocale on English. */
+export async function loadLocale(tag: string | undefined): Promise<void> {
+  const known = new Set([...Object.keys(locales), ...Object.keys(localeLoaders)]);
+  await loadLocalePack(resolveLocale(tag, known)).catch(() => undefined);
+}
+
 export function documentLanguage(code: string): string {
-  const pack = locales[code];
-  const shown = localeChoices.find((choice) => locales[choice.code] === pack)?.code ?? code;
+  const load = localeLoaders[code];
+  const shown = (load && localeChoices.find((choice) => localeLoaders[choice.code] === load)?.code) ?? code;
   return shown
     .split("-")
     .map((part, index) =>

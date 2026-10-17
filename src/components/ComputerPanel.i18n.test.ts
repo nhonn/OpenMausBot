@@ -5,7 +5,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { setLocale, t } from "@/lib/i18n";
-import { locales } from "@/locales";
+import { loadAllLocalePacks, locales } from "@/locales";
 import { screenPreviewFailure } from "@/lib/screen-preview";
 
 const capabilities: DesktopCapabilities = {
@@ -22,6 +22,8 @@ vi.mock("./DesktopCapabilities", () => ({
 
 const { LocalScreenPreview } = await import("./LocalScreenPreview");
 const { CloudScreenPreview } = await import("./CloudScreenPreview");
+
+await loadAllLocalePacks();
 
 afterEach(() => {
   setLocale("en");

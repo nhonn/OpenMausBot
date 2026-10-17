@@ -5,7 +5,7 @@ import { createRoot, type Root } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { BotEditorStore, initialState, reducer, type Action, type AppState, type Bot } from "@/state/store";
 import { BotContextMenu } from "./Sidebar";
-import { setLocale } from "@/lib/i18n";
+import { loadLocale, setLocale } from "@/lib/i18n";
 
 vi.mock("./DesktopCapabilities", () => ({ useDesktopCapabilities: () => ({}) }));
 vi.mock("@/lib/interface-mode", async (original) => ({
@@ -33,6 +33,8 @@ const response = (threadId: string) => {
   const current = state.bots[0]!;
   return new Response(JSON.stringify({ bot: { ...current, tasks: current.tasks!.map((task) => task.threadId === threadId ? { ...task, unread: false } : task) } }), { headers: { "content-type": "application/json" } });
 };
+
+await loadLocale("pt-br");
 
 beforeEach(() => {
   setLocale("en"); document.documentElement.dataset.reducedMotion = "true";

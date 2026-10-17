@@ -1,11 +1,15 @@
 // Pure helpers that hold English in module-scope tables can resolve a label once at import and never follow the language.
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, beforeAll, describe, expect, it } from "vitest";
 
-import { activeLocale, setLocale } from "./i18n";
+import { activeLocale, loadLocale, setLocale } from "./i18n";
 import { liveActivityLabel } from "./live-activity";
 import { replyAuthor, replySnippet } from "./replies";
 import { costCaption, usageChip, usageDetail } from "./usage";
 import type { Message } from "@/state/store";
+
+beforeAll(async () => {
+  await Promise.all(["pt-br", "ja", "de"].map(loadLocale));
+});
 
 const activity = (name: string, extra: Record<string, unknown> = {}): Message =>
   ({ id: "a", at: 1, role: "bot", kind: "activity", tool: { ...extra, name } }) as Message;

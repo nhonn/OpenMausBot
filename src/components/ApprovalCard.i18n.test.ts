@@ -2,7 +2,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, describe, expect, it } from "vitest";
 
-import { setLocale } from "@/lib/i18n";
+import { loadLocale, setLocale } from "@/lib/i18n";
 import { StoreProvider, type Bot, type Message } from "@/state/store";
 import { ApprovalCard } from "./ApprovalCard";
 import {
@@ -38,6 +38,8 @@ function commandApproval(answered?: "allow" | "deny"): { message: Message; pendi
     },
   };
 }
+
+await Promise.all([loadLocale("de"), loadLocale("pt-BR")]);
 
 afterEach(() => {
   setLocale("en");

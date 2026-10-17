@@ -5,6 +5,8 @@ import {
   BROWSER_SIGN_IN_FAILED, previewBrowserSignIn, readSessionState, SERVICE_TRUST_REASON, takeBrowserSignInFromLocation, takePairingCodeFromLocation, takeInvitedEmailFromLocation,
 } from "./lib/session";
 import { bootstrapBrand } from "./lib/brand";
+import { loadLocale, setLocale } from "./lib/i18n";
+import { languageChoice } from "./lib/language-preference";
 import { applySkin, readSkin } from "./lib/skins";
 import { applyChatWidth, readChatWidth } from "./lib/chat-width";
 import { applyFont, readFont } from "./lib/fonts";
@@ -38,6 +40,12 @@ async function chooseRoot(): Promise<React.ReactNode> {
   return <App />;
 }
 
-void Promise.all([bootstrapBrand(), chooseRoot()]).then(([, root]) => {
+async function applyInitialLocale(): Promise<void> {
+  const tag = languageChoice() || globalThis.navigator?.language;
+  await loadLocale(tag);
+  setLocale(tag);
+}
+
+void Promise.all([bootstrapBrand(), applyInitialLocale(), chooseRoot()]).then(([, , root]) => {
   createRoot(document.getElementById("root")!).render(<StrictMode>{root}</StrictMode>);
 });

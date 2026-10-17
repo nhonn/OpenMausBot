@@ -4,7 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { InstanceInfo, Message } from "@/state/store";
 import { failedTurnTool } from "../../shared/failed-turn";
 import { TRIAL_CREDIT_REFUSED } from "../../shared/trial-credit";
-import { setLocale } from "@/lib/i18n";
+import { loadLocale, setLocale } from "@/lib/i18n";
 
 const fixture = vi.hoisted(() => {
   vi.stubGlobal("window", {});
@@ -30,6 +30,8 @@ const show = (tool: NonNullable<Message["tool"]>, onRetry?: () => void) => {
   const html = renderToStaticMarkup(createElement(FailedTurnRow, { tool, engine, onRetry }));
   return { html, buttons: (html.match(/<button[^>]*>[\s\S]*?<\/button>/g) ?? []).map(button => button.replace(/<[^>]+>/g, "")) };
 };
+
+await loadLocale("de");
 
 beforeEach(() => setLocale("en"));
 afterEach(() => setLocale("en"));

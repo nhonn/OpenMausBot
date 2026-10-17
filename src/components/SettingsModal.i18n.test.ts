@@ -4,7 +4,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 
-import { setLocale } from "@/lib/i18n";
+import { loadLocale, setLocale } from "@/lib/i18n";
 import { en, locales } from "@/locales";
 import { StoreProvider } from "@/state/store";
 
@@ -28,6 +28,8 @@ async function renderSettings(): Promise<string> {
   const { SettingsModal } = await import("./SettingsModal");
   return renderToStaticMarkup(createElement(StoreProvider, null, createElement(SettingsModal)));
 }
+
+await Promise.all([loadLocale("pt-br"), loadLocale("ja")]);
 
 afterEach(() => {
   setLocale("en");
