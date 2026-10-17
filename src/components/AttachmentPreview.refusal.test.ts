@@ -3,12 +3,14 @@ import { createElement } from "react";
 import { flushSync } from "react-dom";
 import { createRoot, type Root } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { setLocale } from "@/lib/i18n";
+import { loadLocale, setLocale } from "@/lib/i18n";
 import { AttachmentThumbnail } from "./AttachmentPreview";
 
 const src = "/api/threads/t/messages/m/file?preview=1&ref=24";
 let root: Root;
 let host: HTMLDivElement;
+
+await loadLocale("de");
 
 beforeEach(() => {
   host = document.createElement("div");

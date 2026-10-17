@@ -2,7 +2,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { setLocale, t } from "@/lib/i18n";
+import { loadLocale, setLocale, t } from "@/lib/i18n";
 import { initialState, type Bot } from "@/state/store";
 
 vi.mock("./DesktopCapabilities", () => ({
@@ -31,6 +31,8 @@ const rowProps = (value: Bot) => botRowProps(initialState, () => {}, value, { de
 function renderRow(value: Bot): string {
   return renderToStaticMarkup(createElement(BotListItem, rowProps(value)));
 }
+
+await Promise.all([loadLocale("ja"), loadLocale("pt-br"), loadLocale("zh")]);
 
 afterEach(() => {
   setLocale("en");

@@ -1,7 +1,7 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from "vitest";
 import type { Message } from "@/state/store";
 import { formatTime } from "@/state/store";
-import { setLocale, t } from "./i18n";
+import { loadLocale, setLocale, t } from "./i18n";
 import { dayLabel, localDay, transcriptLookups } from "./transcript-derivations";
 
 // The per-row code these replace, kept here as the reference.
@@ -104,7 +104,8 @@ describe("dayLabel", () => {
     }
   });
 
-  it("follows the app language when it changes", () => {
+  it("follows the app language when it changes", async () => {
+    await Promise.all(["de", "fr"].map(loadLocale));
     const at = Date.UTC(2025, 0, 6, 12);
     expect(dayLabel(at)).toBe(dayLabelBefore(at, "en"));
     setLocale("de");

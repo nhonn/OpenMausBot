@@ -2,7 +2,7 @@ import { useRef, useState, type KeyboardEvent, type ReactNode, type Ref } from "
 import { Check, CloudUpload, Laptop, Sparkles, Users } from "lucide-react";
 import type { CloudMoveState } from "../../../electron/cloud-move.mjs";
 import { formatMoveBytes, moveView, type CloudMoveHandle } from "@/components/CloudMove";
-import { TeamLibraryPanel } from "@/components/TeamLibraryPanel";
+import { TeamLibraryPanel } from "@/components/lazy-screens";
 import { suggestedChoice, type BringChoice } from "@/lib/cloud-welcome";
 import { cn } from "@/lib/cn";
 import { activeLocale, t } from "@/lib/i18n";

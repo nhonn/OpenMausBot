@@ -4,7 +4,7 @@ import { flushSync } from "react-dom";
 import { createRoot, type Root } from "react-dom/client";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { AppState, Bot, InstanceInfo } from "@/state/store";
-import { setLocale, t } from "@/lib/i18n";
+import { loadLocale, setLocale, t } from "@/lib/i18n";
 
 const fixture = vi.hoisted(() => ({ advanced: true, android: false }));
 
@@ -88,8 +88,9 @@ const press = (label: string, key: string) => {
   return event;
 };
 
-beforeAll(() => {
+beforeAll(async () => {
   vi.stubGlobal("ogb", undefined);
+  await loadLocale("de");
 });
 beforeEach(() => {
   // The panel remembers each conversation's tab, so one test's click must not choose the next test's tab.

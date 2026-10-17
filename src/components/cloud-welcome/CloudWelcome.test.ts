@@ -202,7 +202,7 @@ describe("CloudWelcome", () => {
     await vi.waitFor(() => expect(text()).toContain("142 chats"));
     flushSync(() => (host.querySelector('[data-bring-choice="fresh"]') as HTMLButtonElement).click());
     click("Choose a team");
-    expect(host.querySelector("[data-team-library]")).not.toBeNull();
+    await vi.waitFor(() => expect(host.querySelector("[data-team-library]")).not.toBeNull());
     flushSync(() => fixture.imported!());
     expect(hintsPut().at(-1)).toEqual([SHOWN, welcomeStepHint("bring")]);
     expect(bridge.dismiss).not.toHaveBeenCalled();

@@ -1,7 +1,7 @@
 import { createElement, type ComponentProps } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { setLocale } from "@/lib/i18n";
+import { loadLocale, setLocale } from "@/lib/i18n";
 import type { SendKey } from "@/lib/send-key";
 import { en, locales } from "@/locales";
 import type { AppSettingsSection } from "@/state/store";
@@ -87,6 +87,8 @@ vi.mock("./SettingsPrimitives", async (importOriginal) => {
     },
   };
 });
+
+await loadLocale("ja");
 
 beforeEach(() => {
   vi.clearAllMocks();

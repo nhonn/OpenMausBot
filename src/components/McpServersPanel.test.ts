@@ -2,7 +2,9 @@ import { afterEach, describe, expect, it } from "vitest";
 
 import { parseMcpArguments, parseMcpEnvironment, parseMcpHeaders, parseMcpOAuthClient } from "./McpServersPanel";
 import { parseMcpResultBudget, withResultBudget } from "./McpResultBudgetField";
-import { setLocale, t } from "@/lib/i18n";
+import { loadLocale, setLocale, t } from "@/lib/i18n";
+
+await loadLocale("de");
 
 afterEach(() => setLocale("en"));
 

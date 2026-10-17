@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { CALL_MODE_KEY, CALL_MODES, callModeHint, effectiveCallMode, liveDisclosure, parseCallMode } from "./call-mode";
 import { t } from "./i18n";
-import { localeChoices, locales } from "@/locales";
+import { loadAllLocalePacks, localeChoices, locales } from "@/locales";
 
 describe("call mode", () => {
   afterEach(() => {
@@ -31,7 +31,8 @@ describe("call mode", () => {
     expect(liveDisclosure({ cloudHome: false })).toBe(t("call.live.disclosure"));
   });
 
-  it("writes both disclosures in the same language in every pack", () => {
+  it("writes both disclosures in the same language in every pack", async () => {
+    await loadAllLocalePacks();
     for (const { code } of localeChoices) {
       const pack = locales[code];
       expect(Object.hasOwn(pack, "call.live.disclosureCloud"), code).toBe(Object.hasOwn(pack, "call.live.disclosure"));

@@ -3,11 +3,13 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, describe, expect, it } from "vitest";
 
 import { setLocale, t } from "@/lib/i18n";
-import { locales } from "@/locales";
+import { loadAllLocalePacks, locales } from "@/locales";
 import { connectedInventoryCopy, connectorActionLabel } from "@/lib/connector-status";
 import { disconnectAccountConfirmation } from "./PluginsPanel";
 import { parseMcpEnvironment } from "./McpServersPanel";
 import { ConnectorCard } from "./ConnectorCard";
+
+await loadAllLocalePacks();
 
 afterEach(() => {
   setLocale("en");

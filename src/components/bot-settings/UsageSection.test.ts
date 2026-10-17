@@ -2,7 +2,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { setLocale } from "@/lib/i18n";
+import { loadLocale, setLocale } from "@/lib/i18n";
 
 vi.mock("@/state/store", () => ({
   useStore: () => ({ state: { instances: [] }, dispatch: () => {} }),
@@ -17,6 +17,8 @@ const bot = (usage?: Record<string, unknown>) => ({
 }) as any;
 
 const text = (html: string) => html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+
+await loadLocale("de");
 
 afterEach(() => {
   setLocale("en");

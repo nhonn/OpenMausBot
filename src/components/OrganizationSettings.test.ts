@@ -2,7 +2,7 @@ import { Children, createElement, isValidElement, type EffectCallback, type Reac
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { ManagedDesktopBridge, ManagedDesktopState } from "../../electron/managed-desktop.mjs";
-import { setLocale, t } from "@/lib/i18n";
+import { loadLocale, setLocale, t } from "@/lib/i18n";
 import { locales } from "@/locales";
 
 const fixture = vi.hoisted(() => ({ values: [] as unknown[], index: 0, effects: [] as EffectCallback[], updating: false,
@@ -57,6 +57,7 @@ const connecting: ManagedDesktopState = { status: "connecting", enrollment: { us
 let bridge: ManagedDesktopBridge;
 let push: (state: ManagedDesktopState) => void;
 let unsubscribe = vi.fn<() => void>();
+await loadLocale("ja");
 beforeEach(() => {
   fixture.values = []; fixture.index = 0; fixture.effects = []; fixture.updating = false;
   fixture.store = { bots: [], instances: [], dispatch: vi.fn(), flushBotPatches: vi.fn(async () => null) };

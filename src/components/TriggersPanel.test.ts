@@ -3,7 +3,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { Bot } from "@/state/store";
 import type { WebhookTrigger } from "@/lib/webhooks";
-import { setLocale, t } from "@/lib/i18n";
+import { loadLocale, setLocale, t } from "@/lib/i18n";
 
 // The pop-up's own state, seeded by call order (effects never run under
 // server rendering): useWebhookActions owns 0–4, the builder 5–10.
@@ -80,6 +80,8 @@ function render() {
   return { html, nodes: nodes(tree) };
 }
 const flush = () => new Promise((resolve) => setTimeout(resolve, 0));
+
+await loadLocale("de");
 
 beforeEach(() => {
   fixture.api.mockReset();

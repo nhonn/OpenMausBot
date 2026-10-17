@@ -35,7 +35,7 @@ vi.mock("@/lib/cloud-guest", () => ({ useCanWriteIn: () => true }));
 
 const { Sidebar } = await import("./Sidebar");
 const { BotEditorStore, initialState, reducer } = await import("@/state/store");
-const { setLocale, t } = await import("@/lib/i18n");
+const { loadLocale, setLocale, t } = await import("@/lib/i18n");
 
 const HOUR = 3_600_000;
 const NOW = new Date(2026, 9, 4, 12, 0).getTime();
@@ -103,6 +103,7 @@ beforeAll(async () => {
   vi.useFakeTimers({ toFake: ["Date", "setInterval", "clearInterval"] });
   vi.setSystemTime(NOW);
   vi.stubGlobal("fetch", () => new Promise(() => {}));
+  await loadLocale("de");
   setLocale("en");
   const container = document.createElement("div");
   document.body.append(container);

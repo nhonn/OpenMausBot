@@ -1,38 +1,56 @@
 import en from "./en.json";
-import de from "./de.json";
-import es from "./es.json";
-import fr from "./fr.json";
-import hi from "./hi.json";
-import ja from "./ja.json";
-import ptBr from "./pt-br.json";
-import zh from "./zh.json";
-import zhTw from "./zh-tw.json";
-import uk from "./uk.json";
-import vi from "./vi.json";
-import tr from "./tr.json";
-
 export { en };
 export type LocaleKey = keyof typeof en;
 export type LocalePack = Partial<Record<LocaleKey, string>>;
 
-export const locales: Record<string, LocalePack> = {
-  en,
-  de,
-  es,
-  fr,
-  hi,
-  ja,
-  pt: ptBr,
-  "pt-br": ptBr,
-  zh,
-  "zh-hant": zhTw,
-  "zh-hk": zhTw,
-  "zh-mo": zhTw,
-  "zh-tw": zhTw,
-  uk,
-  vi,
-  tr,
+type PackLoader = () => Promise<{ default: LocalePack }>;
+
+const loadPtBr: PackLoader = () => import("./pt-br.json");
+const loadZhTw: PackLoader = () => import("./zh-tw.json");
+
+export const localeLoaders: Readonly<Record<string, PackLoader>> = {
+  de: () => import("./de.json"),
+  es: () => import("./es.json"),
+  fr: () => import("./fr.json"),
+  hi: () => import("./hi.json"),
+  ja: () => import("./ja.json"),
+  pt: loadPtBr,
+  "pt-br": loadPtBr,
+  zh: () => import("./zh.json"),
+  "zh-hant": loadZhTw,
+  "zh-hk": loadZhTw,
+  "zh-mo": loadZhTw,
+  "zh-tw": loadZhTw,
+  uk: () => import("./uk.json"),
+  vi: () => import("./vi.json"),
+  tr: () => import("./tr.json"),
 };
+
+/** Packs that have been loaded so far; every alias of a pack points at the same object. */
+export const locales: Record<string, LocalePack> = { en };
+
+const pending = new Map<PackLoader, Promise<void>>();
+
+export function loadLocalePack(code: string): Promise<void> {
+  const load = localeLoaders[code];
+  if (!load || locales[code]) return Promise.resolve();
+  let loading = pending.get(load);
+  if (!loading) {
+    loading = load()
+      .then(({ default: pack }) => {
+        for (const [alias, aliasLoader] of Object.entries(localeLoaders)) {
+          if (aliasLoader === load) locales[alias] = pack;
+        }
+      })
+      .finally(() => pending.delete(load));
+    pending.set(load, loading);
+  }
+  return loading;
+}
+
+export function loadAllLocalePacks(): Promise<void[]> {
+  return Promise.all(Object.keys(localeLoaders).map(loadLocalePack));
+}
 
 export const localeChoices: ReadonlyArray<{ code: string; label: string }> = [
   { code: "en", label: "English" },
